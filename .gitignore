@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env/
+.venv/
+
+# Audio cache or user files (optional)
+*.wav
+*.mp3
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/editor stuff
+.vscode/
+.idea/
+*.swp
+
+# Log files
+*.log
