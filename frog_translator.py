@@ -1,6 +1,7 @@
 import random
 import os
 import speech_recognition as sr
+from pydub import AudioSegment
 
 try:
     import pygame
@@ -24,6 +25,13 @@ FROG_FACTS = [
     "Some frogs can jump over 20 times their own body length!",
     "Frogs don’t drink water, they soak it in through their skin!"
 ]
+
+def convert_to_wav(path):
+    audio = AudioSegment.from_file(path)
+    wav_path = "temp_converted.wav"
+    audio = audio.set_frame_rate(16000).set_channels(1).set_sample_width(2)
+    audio.export(wav_path, format="wav")
+    return wav_path
 
 def play_audio(path):
     try:
@@ -59,7 +67,8 @@ def generate_gibberish(length):
 def translate_audio(file_path):
     recognizer = sr.Recognizer()
     try:
-        with sr.AudioFile(file_path) as source:
+        wav_file = convert_to_wav(file_path)
+        with sr.AudioFile(wav_file) as source:
             audio = recognizer.record(source)
             text = recognizer.recognize_google(audio)
             print("🐸 Recognized speech:", text)
@@ -68,13 +77,14 @@ def translate_audio(file_path):
         print("⚠️ Could not understand audio, generating frog gibberish instead.")
         return generate_gibberish(10)
 
+
 def main():
     print("🐸 Welcome to Frog Translator (Text or Audio Edition)! 🐸")
 
     while True:
         mode = input("\nEnter mode ('text', 'audio', or 'exit'): ").lower()
 
-        if mode == 'exit':
+        if mode == 'exit' or mode == '0':
             print("Bye bye 🐸 Did you know? " + random.choice(FROG_FACTS))
             break
 
